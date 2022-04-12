@@ -4,8 +4,9 @@
  * @Author: zch
  * @Date: 2022-04-12 10:39:36
  * @LastEditors: zch
- * @LastEditTime: 2022-04-12 15:15:06
+ * @LastEditTime: 2022-04-12 15:51:56
  */
+import { createError } from './helpers/error'
 import { parseHeaders } from './helpers/parseHeaders'
 import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from './types'
 
@@ -52,18 +53,26 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     function handleResponse(response: AxiosResponse): void {
       if (response.status < 200 || response.status > 300) {
-        reject(new Error(`Request failed with status code ${response.status}`))
+        reject(
+          createError(
+            `Request failed with status code ${response.status}`,
+            config,
+            null,
+            request,
+            response
+          )
+        )
       } else {
         resolve(response)
       }
     }
 
     request.onerror = function handleError() {
-      reject(new Error('Network Error'))
+      reject(createError('Network Error', config, null, request))
     }
 
     request.ontimeout = function(e) {
-      reject(new Error('Timeout of ${timeout}ms exceeded'))
+      reject(createError('Timeout of ${timeout}ms exceeded', config, 'ECONNABORTED', request))
     }
 
     Object.keys(headers).forEach(name => {

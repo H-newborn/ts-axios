@@ -4,7 +4,7 @@
  * @Author: zch
  * @Date: 2022-04-12 10:39:36
  * @LastEditors: zch
- * @LastEditTime: 2022-04-12 15:31:18
+ * @LastEditTime: 2022-04-12 15:43:30
  */
 // 字符串字面量类型
 export type Method =
@@ -46,7 +46,7 @@ export interface AxiosPromise extends Promise<AxiosResponse> {}
 
 export interface AxiosError extends Error {
   config: AxiosRequestConfig
-  code?: string
+  code?: string | null
   request?: any
   resonse?: AxiosResponse
   isAxiosError: boolean

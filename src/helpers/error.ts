@@ -6,7 +6,7 @@ import { AxiosRequestConfig, AxiosResponse } from '../types'
  * @Author: zch
  * @Date: 2022-04-12 15:25:08
  * @LastEditors: zch
- * @LastEditTime: 2022-04-12 15:33:16
+ * @LastEditTime: 2022-04-12 15:45:00
  */
 export class AxiosError extends Error {
   isAxiosError: boolean
@@ -18,7 +18,7 @@ export class AxiosError extends Error {
   constructor(
     message: string,
     config: AxiosRequestConfig,
-    code?: string,
+    code?: string | null,
     response?: AxiosResponse,
     request?: any
   ) {
@@ -32,4 +32,16 @@ export class AxiosError extends Error {
 
     Object.setPrototypeOf(this, AxiosError.prototype)
   }
+}
+
+export function createError(
+  message: string,
+  config: AxiosRequestConfig,
+  code?: string | null,
+  request?: any,
+  response?: AxiosResponse
+): AxiosError {
+  const error = new AxiosError(message, config, code, request, response)
+
+  return error
 }
