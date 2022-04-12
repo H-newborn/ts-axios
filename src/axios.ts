@@ -2,52 +2,23 @@
  * @Descripttion:
  * @version:
  * @Author: zch
- * @Date: 2022-04-12 10:39:36
+ * @Date: 2022-04-12 17:00:57
  * @LastEditors: zch
- * @LastEditTime: 2022-04-12 15:58:15
+ * @LastEditTime: 2022-04-12 17:14:10
  */
-import { transformRequest, transformResponse } from './helpers/data'
-import { processHeaders } from './helpers/header'
-import { buildURL } from './helpers/url'
-import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from './types'
-import xhr from './xhr'
+import Axios from './core/Axios'
+import { extend } from './helpers/util'
+import { AxiosInstance } from './types'
 
-function axios(config: AxiosRequestConfig): AxiosPromise {
-  processConfig(config)
-  return xhr(config).then(res => {
-    return transformResponseData(res)
-  })
+function createInstance(): AxiosInstance {
+  const context = new Axios()
+  // 指向 request 方法
+  const instance = Axios.prototype.request.bind(context)
+  // 继承方法
+  extend(instance, context)
+  return instance as AxiosInstance
 }
 
-// 处理相关配置
-function processConfig(config: AxiosRequestConfig): void {
-  config.url = transformURL(config)
-  config.headers = transformHeaders(config)
-  config.data = transformRequestData(config)
-}
-
-// 处理url
-function transformURL(config: AxiosRequestConfig): string {
-  const { url, params } = config
-  return buildURL(url, params)
-}
-
-// 处理请求头
-function transformHeaders(config: AxiosRequestConfig): string {
-  const { headers = {}, data } = config
-  return processHeaders(headers, data)
-}
-
-// 处理请求数据
-function transformRequestData(config: AxiosRequestConfig): void {
-  const { data } = config
-  return transformRequest(data)
-}
-
-// 处理相应数据
-function transformResponseData(res: AxiosResponse): AxiosResponse {
-  res.data = transformResponse(res.data)
-  return res
-}
+const axios = createInstance()
 
 export default axios
