@@ -1,8 +1,16 @@
-import { transformRequest } from "./helpers/data"
-import { processHeaders } from "./helpers/header"
-import { buildURL } from "./helpers/url"
-import { AxiosRequestConfig } from "./types"
-import xhr from "./xhr"
+/*
+ * @Descripttion:
+ * @version:
+ * @Author: zch
+ * @Date: 2022-04-12 10:39:36
+ * @LastEditors: zch
+ * @LastEditTime: 2022-04-12 10:44:05
+ */
+import { transformRequest } from './helpers/data'
+import { processHeaders } from './helpers/header'
+import { buildURL } from './helpers/url'
+import { AxiosRequestConfig } from './types'
+import xhr from './xhr'
 
 function axios(config: AxiosRequestConfig): void {
   processConfig(config)
@@ -24,7 +32,7 @@ function transformURL(config: AxiosRequestConfig): string {
 // 处理请求头
 function transformHeaders(config: AxiosRequestConfig): string {
   const { headers = {}, data } = config
-  processHeaders(headers, data)
+  return processHeaders(headers, data)
 }
 
 // 处理请求数据
