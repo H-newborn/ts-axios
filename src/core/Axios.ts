@@ -4,14 +4,23 @@
  * @Author: zch
  * @Date: 2022-04-12 16:36:36
  * @LastEditors: zch
- * @LastEditTime: 2022-04-12 16:56:59
+ * @LastEditTime: 2022-04-12 17:38:46
  */
 import { AxiosPromise, AxiosRequestConfig, Method } from '../types'
 import dispatchRequest from './dispatchRequest'
 
 export default class Axios {
-  request(config: AxiosRequestConfig): AxiosPromise {
-    return dispatchRequest(config)
+  // 兼容
+  request(url: any, config?: AxiosRequestConfig): AxiosPromise {
+    if (typeof url === 'string') {
+      if (!config) {
+        config = {}
+      }
+      config.url = url
+    } else {
+      config = url
+    }
+    return dispatchRequest(config as AxiosRequestConfig)
   }
 
   get(url: string, config?: AxiosRequestConfig): AxiosPromise {

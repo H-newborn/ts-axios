@@ -4,7 +4,7 @@
  * @Author: zch
  * @Date: 2022-04-12 15:55:32
  * @LastEditors: zch
- * @LastEditTime: 2022-04-12 17:12:57
+ * @LastEditTime: 2022-04-12 17:46:49
  */
 import axios, { AxiosError } from '../../src/index'
 

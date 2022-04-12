@@ -4,12 +4,13 @@
  * @Author: zch
  * @Date: 2022-04-12 17:00:57
  * @LastEditors: zch
- * @LastEditTime: 2022-04-12 17:14:10
+ * @LastEditTime: 2022-04-12 17:15:35
  */
 import Axios from './core/Axios'
 import { extend } from './helpers/util'
 import { AxiosInstance } from './types'
 
+// 工厂函数
 function createInstance(): AxiosInstance {
   const context = new Axios()
   // 指向 request 方法
