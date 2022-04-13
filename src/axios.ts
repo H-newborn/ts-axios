@@ -4,8 +4,10 @@
  * @Author: zch
  * @Date: 2022-04-12 17:00:57
  * @LastEditors: zch
- * @LastEditTime: 2022-04-13 14:57:44
+ * @LastEditTime: 2022-04-13 16:55:36
  */
+import Cancel, { isCancel } from './cancel/Cancel'
+import CancelToken from './cancel/cancelToken'
 import Axios from './core/Axios'
 import mergeConfig from './core/mergeConfig'
 import defaults from './helpers/defaults'
@@ -28,5 +30,9 @@ const axios = createInstance(defaults)
 axios.create = function create(config) {
   return createInstance(mergeConfig(defaults, config))
 }
+
+axios.CancelToken = CancelToken
+axios.Cancel = Cancel
+axios.isCancel = isCancel
 
 export default axios
