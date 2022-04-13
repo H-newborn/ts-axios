@@ -4,12 +4,39 @@
  * @Author: zch
  * @Date: 2022-04-12 16:36:36
  * @LastEditors: zch
- * @LastEditTime: 2022-04-12 17:38:46
+ * @LastEditTime: 2022-04-13 10:53:08
  */
-import { AxiosPromise, AxiosRequestConfig, Method } from '../types'
+import InterceptorManager from '../helpers/interceptor'
+import {
+  AxiosPromise,
+  AxiosRequestConfig,
+  AxiosResponse,
+  Method,
+  RejectedFn,
+  ResolvedFn
+} from '../types'
 import dispatchRequest from './dispatchRequest'
 
+interface Interceptors {
+  request: InterceptorManager<AxiosRequestConfig>
+  response: InterceptorManager<AxiosResponse>
+}
+
+interface PromiseChain {
+  resolved: ResolvedFn | ((config?: AxiosRequestConfig) => AxiosPromise)
+  rejected?: RejectedFn
+}
+
 export default class Axios {
+  interceptors: Interceptors
+
+  constructor() {
+    this.interceptors = {
+      request: new InterceptorManager<AxiosRequestConfig>(),
+      response: new InterceptorManager<AxiosResponse>()
+    }
+  }
+
   // 兼容
   request(url: any, config?: AxiosRequestConfig): AxiosPromise {
     if (typeof url === 'string') {
@@ -20,7 +47,31 @@ export default class Axios {
     } else {
       config = url
     }
-    return dispatchRequest(config as AxiosRequestConfig)
+
+    // 实现链式调用
+    const chain: PromiseChain[] = [
+      {
+        resolved: dispatchRequest,
+        rejected: undefined
+      }
+    ]
+
+    this.interceptors.request.forEach(interceptor => {
+      chain.unshift(interceptor)
+    })
+
+    this.interceptors.response.forEach(interceptor => {
+      chain.push(interceptor)
+    })
+
+    let promise = Promise.resolve(config)
+
+    while (chain.length) {
+      const { resolved, rejected } = chain.shift()!
+      promise = promise.then(resolved, rejected)
+    }
+
+    return promise as AxiosPromise
   }
 
   get(url: string, config?: AxiosRequestConfig): AxiosPromise {

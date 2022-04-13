@@ -4,7 +4,7 @@
  * @Author: zch
  * @Date: 2022-04-12 10:39:36
  * @LastEditors: zch
- * @LastEditTime: 2022-04-12 17:32:03
+ * @LastEditTime: 2022-04-13 09:52:20
  */
 // 字符串字面量类型
 export type Method =
@@ -74,4 +74,18 @@ export interface AxiosInstance extends Axios {
   (config: AxiosRequestConfig): AxiosPromise
 
   (url: string, config?: AxiosRequestConfig): AxiosPromise
+}
+
+// 拦截器
+export interface AxiosInterceptorManager<T> {
+  use(resolved: ResolvedFn<T>, rejected?: RejectedFn): number
+  eject(id: number): number
+}
+
+export interface ResolvedFn<T = any> {
+  (val: T): T | Promise<T>
+}
+
+export interface RejectedFn {
+  (error: any): any
 }
