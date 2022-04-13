@@ -4,8 +4,9 @@
  * @Author: zch
  * @Date: 2022-04-12 10:39:36
  * @LastEditors: zch
- * @LastEditTime: 2022-04-13 14:10:03
+ * @LastEditTime: 2022-04-13 15:02:56
  */
+
 // 字符串字面量类型
 export type Method =
   | 'get'
@@ -33,6 +34,7 @@ export interface AxiosRequestConfig {
   timeout?: number
   transformRequest?: AxiosTransformer | AxiosTransformer[]
   transformResponse?: AxiosTransformer | AxiosTransformer[]
+
   [propName: string]: any
 }
 
@@ -81,6 +83,10 @@ export interface AxiosInstance extends Axios {
   (config: AxiosRequestConfig): AxiosPromise
 
   (url: string, config?: AxiosRequestConfig): AxiosPromise
+}
+
+export interface AxiosStatic extends AxiosInstance {
+  create(config?: AxiosRequestConfig): AxiosInstance
 }
 
 // 拦截器
