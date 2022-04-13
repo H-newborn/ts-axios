@@ -4,7 +4,7 @@
  * @Author: zch
  * @Date: 2022-04-12 10:39:36
  * @LastEditors: zch
- * @LastEditTime: 2022-04-12 15:51:56
+ * @LastEditTime: 2022-04-13 11:21:38
  */
 import { createError } from './helpers/error'
 import { parseHeaders } from './helpers/parseHeaders'
@@ -24,7 +24,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       request.timeout = timeout
     }
 
-    request.open(method.toUpperCase(), url, true)
+    request.open(method.toUpperCase(), url!, true)
 
     request.onreadystatechange = function handleLoad() {
       if (request.readyState !== 4) {

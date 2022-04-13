@@ -4,10 +4,10 @@
  * @Author: zch
  * @Date: 2022-04-12 10:39:36
  * @LastEditors: zch
- * @LastEditTime: 2022-04-12 16:57:51
+ * @LastEditTime: 2022-04-13 13:55:36
  */
 import { transformRequest, transformResponse } from '../helpers/data'
-import { processHeaders } from '../helpers/header'
+import { flattenHeaders, processHeaders } from '../helpers/header'
 import { buildURL } from '../helpers/url'
 import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from '../types'
 import xhr from '../xhr'
@@ -24,6 +24,7 @@ function processConfig(config: AxiosRequestConfig): void {
   config.url = transformURL(config)
   config.headers = transformHeaders(config)
   config.data = transformRequestData(config)
+  config.headers = flattenHeaders(config.headers, config.method!)
 }
 
 // 处理url

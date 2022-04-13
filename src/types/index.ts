@@ -4,7 +4,7 @@
  * @Author: zch
  * @Date: 2022-04-12 10:39:36
  * @LastEditors: zch
- * @LastEditTime: 2022-04-13 09:52:20
+ * @LastEditTime: 2022-04-13 13:55:23
  */
 // 字符串字面量类型
 export type Method =
@@ -25,12 +25,13 @@ export type Method =
 
 export interface AxiosRequestConfig {
   url?: string
-  method?: string
+  method?: Method
   data?: any
   params?: any
   headers?: any
   responseType?: XMLHttpRequestResponseType
   timeout?: number
+  [propName: string]: any
 }
 
 export interface AxiosResponse {
