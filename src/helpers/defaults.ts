@@ -4,9 +4,11 @@
  * @Author: zch
  * @Date: 2022-04-13 11:12:50
  * @LastEditors: zch
- * @LastEditTime: 2022-04-13 11:17:32
+ * @LastEditTime: 2022-04-13 14:13:31
  */
 import { AxiosRequestConfig } from '../types'
+import { transformRequest, transformResponse } from './data'
+import { processHeaders } from './header'
 
 const defaults: AxiosRequestConfig = {
   method: 'get',
@@ -15,7 +17,18 @@ const defaults: AxiosRequestConfig = {
     common: {
       Accept: 'application/json, text/plain, */*'
     }
-  }
+  },
+  transformRequest: [
+    function(data: any, headers: any): any {
+      processHeaders(headers, data)
+      return transformRequest(data)
+    }
+  ],
+  transformResponse: [
+    function(data: any): any {
+      return transformResponse(data)
+    }
+  ]
 }
 
 const methodsNoData = ['delete', 'get', 'head', 'options']
